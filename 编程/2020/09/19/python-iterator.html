@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Python迭代器与生成器</title>
+  <meta name="description" content="在Python2中，我们知道range()和xrange()的差别。range会提前生成一个序列，而xrange会得到一个可迭代对象，从而能够减少内存的占用，优化程序的运行。由于xrange明显优于range，在Python3中，官方废弃了xrange，把range改为了和xrange一样的行为模式。通常rang...">
+
+  <!-- evil icon -->
+
+  <link rel="stylesheet" href="/assets/evil-icons.min.css">
+  <script src="/assets/evil-icons.min.js"></script>
+
+  <!-- todo: include this into main.css -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://zsai001.com/%E7%BC%96%E7%A8%8B/2020/09/19/python-iterator.html">
+  <link rel="alternate" type="application/rss+xml" title="Zsai的博客" href="http://zsai001.com/feed.xml">
+</head>
+
+  <body>
+    <div class="page-content">
+      <div class="container">
+        <div class="three columns">
+          <header class="site-header">
+
+  <h2 class="logo"><a href="/">Zsai的博客</a></h2>
+
+  <div class="nav">
+    
+    <label for="menu-toggle" class="menu-icon">
+        <!--div data-icon="ei-navicon"></div-->
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+    </label>
+    <input type="checkbox" id="menu-toggle">
+
+    <div class="site-nav">
+      <nav>
+        <ul class="page-link">
+          <li><a href="/">Home</a></li>
+          <li><a href="/archive">Posts</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/feed.xml">RSS</a></li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+</header>
+
+        </div>
+
+        <div class="nine columns" style="z-index:100;">
+          <div class="wrapper">
+            <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="artilce_header">
+    <h1 class="artilce_title" itemprop="name headline">Python迭代器与生成器</h1>
+    <p class="artilce_meta"><time datetime="2020-09-19T08:43:00+08:00" itemprop="datePublished">Sep 19, 2020</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">zsai</span></span></p>
+  </header>
+
+  <div class="article-content" itemprop="articleBody">
+    <p>在<code class="language-plaintext highlighter-rouge">Python2</code>中，我们知道<code class="language-plaintext highlighter-rouge">range()</code>和<code class="language-plaintext highlighter-rouge">xrange()</code>的差别。<code class="language-plaintext highlighter-rouge">range</code>会提前生成一个序列，而<code class="language-plaintext highlighter-rouge">xrange</code>会得到一个可迭代对象，从而能够减少内存的占用，
+优化程序的运行。由于<code class="language-plaintext highlighter-rouge">xrange</code>明显优于<code class="language-plaintext highlighter-rouge">range</code>，在<code class="language-plaintext highlighter-rouge">Python3</code>中，官方废弃了<code class="language-plaintext highlighter-rouge">xrange</code>，把<code class="language-plaintext highlighter-rouge">range</code>改为了和<code class="language-plaintext highlighter-rouge">xrange</code>一样的行为模式。</p>
+
+<p>通常<code class="language-plaintext highlighter-rouge">range</code>主要用来搭配<code class="language-plaintext highlighter-rouge">for-in</code>语句使用，用来控制遍历的次数与方式，相比<code class="language-plaintext highlighter-rouge">C++</code>的方式要稍微高级一些。而<code class="language-plaintext highlighter-rouge">range</code>函数的调用，实际上是得到了一个可迭代对象。
+所谓可迭代对象是指这个对象中有<code class="language-plaintext highlighter-rouge">__iter__</code>这个函数，而且这个函数能够返回一个迭代器。而迭代器是指一个对象中，具有<code class="language-plaintext highlighter-rouge">__next__</code>这个函数。迭代的过程，就是不断调用<code class="language-plaintext highlighter-rouge">__next__()</code>这个函数的过程，当没有元素可以迭代时，<code class="language-plaintext highlighter-rouge">__next__</code>函数需要触发一个<code class="language-plaintext highlighter-rouge">StopIteration</code>异常。</p>
+
+<p>当我们自己需要定制一个可迭代对象时，通常把这两个函数实现在一起：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>第一个函数用来生成迭代器，第二个函数是迭代器的求值函数。明白了这个道理，我们可以写出自己的<code class="language-plaintext highlighter-rouge">range</code>函数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyRange</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="p">.</span><span class="n">b</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">StopIteration</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">my_range</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">MyRange</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>了解了可迭代对象的奥秘，那我们也就知道了<code class="language-plaintext highlighter-rouge">for-in</code>语句在背后执行的关键流程，所以我们也可以写出自己版本的<code class="language-plaintext highlighter-rouge">for-in</code>：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_for_in</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+    <span class="n">itor</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">__iter__</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">itor</span><span class="p">.</span><span class="n">__next__</span><span class="p">()</span>
+        <span class="n">method</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">StopIteration</span><span class="p">:</span>
+        <span class="k">return</span>
+
+<span class="n">my_for_in</span><span class="p">(</span><span class="n">my_range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="k">print</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>由于没有关键字的加持，所以调用起来还是比较别扭的。</p>
+
+<p>如果我们使用这种方式来定义我们的可迭代对象的话，无疑是比较繁琐的。有没有更加好的方法来生成一个可迭代对象呢，答案是有。那就是<code class="language-plaintext highlighter-rouge">Python</code>里面的生成器。如果一个函数中，包含有关键字<code class="language-plaintext highlighter-rouge">yield</code>,那么这个函数就被称为生成器。这么说有点简单粗暴，我们来看下代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_range_gen</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">begin</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">begin</span>
+            <span class="n">begin</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_range_gen</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这个版本的<code class="language-plaintext highlighter-rouge">range</code>函数，我们发现代码少了很多，但是多了一个特别的关键字<code class="language-plaintext highlighter-rouge">yield</code>。<code class="language-plaintext highlighter-rouge">yield</code>这个关键字执行很有特点。
+我们单独调用<code class="language-plaintext highlighter-rouge">my_range_gen(0, 10)</code>这句代码时，其实是得到了一个生成器。他自带了<code class="language-plaintext highlighter-rouge">next</code>函数，<code class="language-plaintext highlighter-rouge">iter</code>函数，而且<code class="language-plaintext highlighter-rouge">next</code>函数在最后无法求值得时候，还会抛出一个<code class="language-plaintext highlighter-rouge">StopIteration</code>的异常。我们简单的就可以验证下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">k</span> <span class="o">=</span> <span class="n">my_range_gen</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__iter__</span><span class="p">()</span><span class="o">==</span><span class="n">k</span><span class="p">)</span> <span class="c1"># True
+</span><span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span> <span class="c1"># 0
+</span><span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span> <span class="c1"># 1
+</span><span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span> <span class="c1"># 2
+</span><span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span> <span class="c1"># StopIteration
+</span></code></pre></div></div>
+
+<p>执行函数，会得到一个生成器。这个生成器需要调用<code class="language-plaintext highlighter-rouge">__next__()</code>才开始真正执行代码，而且只执行到<code class="language-plaintext highlighter-rouge">yield</code>语句为止。执行的返回值，就是<code class="language-plaintext highlighter-rouge">yield</code>关键字后面的表达式的值。当下一次调用<code class="language-plaintext highlighter-rouge">__next__</code>函数时，代码会继续上一次执行的<code class="language-plaintext highlighter-rouge">yield</code>的位置继续执行，一直到下一个<code class="language-plaintext highlighter-rouge">yield</code>语句为止。当代码执行到最后时，<code class="language-plaintext highlighter-rouge">__next__</code>会抛出一个<code class="language-plaintext highlighter-rouge">StopIteration</code>的异常。从这点来看，生成器不过是可迭代对象的语法糖。借助生成器，我们可以很快的得到一个可迭代对象，代码简洁优美，配合的天衣无缝。</p>
+
+  </div>
+
+  <footer class="article-footer">
+
+  <!-- <section class="share">
+  <a class="share-link" href="" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+    Twitter
+  </a>
+  <a class="share-link" href="" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+    Facebook
+  </a>
+  <a class="share-link" href="" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530'); return false;">
+    Google+
+  </a> 
+</section>
+ -->
+
+  <!-- <hr/> -->
+
+  <section class="author">
+  <div class="authorimage box" style="background: url(/assets/img/zsai.jpg)"></div>
+  <div class="authorinfo box">
+    <p class="blue"> 作者｜Zsai</p>
+    <p class="bio">
+      Golang\C++\Python。熟悉客户端开发，熟悉手机游戏开发，熟悉后台服务器开发。待业长沙.
+    </p>
+  </div>
+</section>
+
+
+  </footer>
+
+  
+
+
+</article>
+
+          </div>
+        </div>
+      </div>
+      <footer class="site-footer">
+  <div class="container">
+    <div class="footer left column one-half">
+      <section class="small-font">
+        Theme <a href="https://github.com/wild-flame/jekyll-simple"> Simple </a> by <a href="http://wildflame.me">wildflame</a>
+        © 2016 
+        Powered by <a href="https://github.com/jekyll/jekyll">jekyll</a>
+      </section>
+    </div>
+
+    <div class="footer right column one-half">
+      <section class="small-font">
+        
+        <a href="https://github.com/zsai001"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span></a>
+
+        
+        
+      </section>
+    </div>
+  </div>
+</footer>
+ 
+    </div>
+  </body>
+</html>

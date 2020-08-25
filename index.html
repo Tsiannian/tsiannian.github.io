@@ -1,96 +1,526 @@
----
-layout: default
-class: home
-css: ['pages/index.css']
-comments: false
----
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<section class="banner">
-    <div class="collection-head">
-        <div class="container">
-            <div class="collection-title">
-              <h1 class="collection-header" id="sub-title"><span>{{ site.subtitle }}</span></h1>
-                <div class="collection-info">
-                    <span class="meta-info mobile-hidden">
-                        <span class="octicon octicon-location"></span>
-                        {{ site.location }}
-                    </span>
-                    <span class="meta-info">
-                        <span class="octicon octicon-organization"></span>
-                        <a href="{{ site.organization_url }}" target="_blank">{{ site.organization }}</a>
-                    </span>
-                     <span class="meta-info">
-                        <span class="octicon octicon-mark-github"></span>
-                        <a href="https://github.com/{{ site.github_username }}" target="_blank">{{ site.github_username }}</a>
-                    </span>
-                </div>
-            </div>
-        </div>
+  <title>Home</title>
+  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+  <!-- evil icon -->
+
+  <link rel="stylesheet" href="/assets/evil-icons.min.css">
+  <script src="/assets/evil-icons.min.js"></script>
+
+  <!-- todo: include this into main.css -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://zsai001.com/">
+  <link rel="alternate" type="application/rss+xml" title="Zsai的博客" href="http://zsai001.com/feed.xml">
+</head>
+
+  <body>
+    <div class="page-content">
+      <div class="container">
+        <div class="three columns">
+          <header class="site-header">
+
+  <h2 class="logo"><a href="/">Zsai的博客</a></h2>
+
+  <div class="nav">
+    
+    <label for="menu-toggle" class="menu-icon">
+        <!--div data-icon="ei-navicon"></div-->
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+    </label>
+    <input type="checkbox" id="menu-toggle">
+
+    <div class="site-nav">
+      <nav>
+        <ul class="page-link">
+          <li><a href="/">Home</a></li>
+          <li><a href="/archive">Posts</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/feed.xml">RSS</a></li>
+        </ul>
+      </nav>
     </div>
-</section>
-<!-- /.banner -->
-<section class="container content">
-    <div class="columns">
-        <div class="column two-thirds" >
-            <ol class="repo-list">
-                {% for post in paginator.posts %}
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="{{ post.url }}">{{ post.title }}</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        {{ post.excerpt | strip_html | strip }}
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> {{ post.date | date: "%Y/%m/%d" }}
-                        </span>
-                        {% for cat in post.categories %}
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="/categories/#{{ cat }}" title="{{ cat }}">{{ cat }}</a>
-                        </span>
-                        {% endfor %}
-                    </p>
-                </li>
-                {% endfor %}
-            </ol>
+
+  </div>
+</header>
+
         </div>
-        <div class="column one-third">
-            {% include sidebar-search.html %}
-            {% include sidebar-popular-repo.html %}
-        </div>
+
+        <div class="nine columns" style="z-index:100;">
+          <div class="wrapper">
+            <div class="home">
+  <div class="post-list">
+
+    
+
+    <div class="post_title">
+      <a href="/%E7%BC%96%E7%A8%8B/2020/09/20/generator-async.html">Python协程与异步</a>
+      <span class="date">20 Sep, 2020</span>
     </div>
-    <div class="pagination text-align">
-      <div class="btn-group">
-        {% if paginator.previous_page %}
-          {% if paginator.previous_page == 1 %}
-              <a href="/" class="btn btn-outline">&laquo;</a>
-          {% else %}
-              <a href="/page{{paginator.previous_page}}"  class="btn btn-outline">&laquo;</a>
-          {% endif %}
-        {% else %}
-            <button disabled="disabled" href="javascript:;" class="btn btn-outline">&laquo;</button>
-        {% endif %}
-        {% if paginator.page == 1 %}
-            <a href="javascript:;" class="active btn btn-outline">1</a>
-        {% else %}
-            <a href="/"  class="btn btn-outline">1</a>
-        {% endif %}
-        {% for count in (2..paginator.total_pages) %}
-          {% if count == paginator.page %}
-              <a href="javascript:;"  class="active btn btn-outline">{{count}}</a>
-          {% else %}
-              <a href="/page{{count}}"  class="btn btn-outline">{{count}}</a>
-          {% endif %}
-        {% endfor %}
-        {% if paginator.next_page %}
-            <a href="/page{{paginator.next_page}}"  class="btn btn-outline">&raquo;</a>
-        {% else %}
-            <button disabled="disabled" href="javascript:;" class="btn btn-outline">&raquo;</button>
-        {% endif %}
-        </div>
+
+    <!-- <article class="post_card post">
+      <header class="post_header">
+        <h2 class="post_title"><a href="/%E7%BC%96%E7%A8%8B/2020/09/20/generator-async.html">Python协程与异步</a></h2>
+        <time class="post_date">20 September 2020, Sunday</time>
+      </header>
+      <div class="post_excerpt">
+        <p>
+          
+          <p>之前介绍过，包含<code class="language-plaintext highlighter-rouge">yield</code>的函数既可以当成一个生成器，也可以当成一个协程。他们都是相同的声明语法，为了减少迷惑性，
+<code class="language-plaintext highlighter-rouge">Python</code>引入了新的关键字<code class="language-plaintext highlighter-rouge">async</code>和<code class="language-plaintext highlighter-rouge">await</code>来定义原生的协程。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>这样的声明方式表示<code class="language-plaintext highlighter-rouge">worker</code>是一个协程，尽管它什么都不做。也无法接收数据。如果需要接收数据，需要使用<code class="language-plaintext highlighter-rouge">await</code>关键字。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">os</span><span class="p">.</span><span class="n">fetch_data</span><span class="p">()</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这里的<code class="language-plaintext highlighter-rouge">await</code>, 我们可以理解它相当于<code class="language-plaintext highlighter-rouge">yiled from</code>。他的执行方式也和<code class="language-plaintext highlighter-rouge">yield from</code>的方式差不多。为了避免混淆，在
+<code class="language-plaintext highlighter-rouge">async def</code>定义的协程里面，是不允许出现<code class="language-plaintext highlighter-rouge">yield</code>和<code class="language-plaintext highlighter-rouge">yield from</code>关键字的。他的作用相当于下面的代码。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">asyncio</span><span class="p">.</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">process_data</span><span class="p">(</span><span class="n">db</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">yield</span> <span class="k">from</span> <span class="n">os</span><span class="p">.</span><span class="n">fatch_data</span><span class="p">()</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>之所以需要在函数前面加上一个 <code class="language-plaintext highlighter-rouge">@asyncio.coroutine</code>，是因为一些新的api只接受原生协程，这种生成器形式的协程就不会被接受了，而
+<code class="language-plaintext highlighter-rouge">@asyncio.coroutine</code>就是把老式的生成器转化为新式的协程，来完成代码的过渡。</p>
+
+<p><code class="language-plaintext highlighter-rouge">await</code>关键字不仅仅能够接收一个协程，他实际上接收的是一个可等待对象。如果不在<code class="language-plaintext highlighter-rouge">async def</code>内部使用<code class="language-plaintext highlighter-rouge">await</code>，就会触发语法错误。</p>
+
+<p>现在我们可以看下原生协程和生成器的区别。原生协程里面，不包含<code class="language-plaintext highlighter-rouge">__iter__</code>函数和<code class="language-plaintext highlighter-rouge">__next__</code>函数，所以他不能用于<code class="language-plaintext highlighter-rouge">for...in</code>语法之中，
+不过普通的生成器可以<code class="language-plaintext highlighter-rouge">yield from</code>一个原生协程。但是原生协程不可以<code class="language-plaintext highlighter-rouge">await</code>一个老的生成器协程，需要加上<code class="language-plaintext highlighter-rouge">@asyncio.coroutine</code>标注,这种方式会在<code class="language-plaintext highlighter-rouge">3.10</code>版本中被废弃掉。</p>
+
+<p>新版本的协程，需要配合异步库asyncio使用，比如我们需要定义一个<code class="language-plaintext highlighter-rouge">main</code>协程函数，执行<code class="language-plaintext highlighter-rouge">main()</code>之后会得到一个协程对象，想要这个协程运行起来，我们需要使用<code class="language-plaintext highlighter-rouge">asyncio.run()</code>方法。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"hell world"</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+<p>如果我们在嵌套的协程里面忘记使用了<code class="language-plaintext highlighter-rouge">await</code>关键字，那么这个协程就不会执行，因为我们调用的函数，只是生成了一个协程对象而已。比如</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">nested</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">42</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">nested</span><span class="p">()</span>
+
+<span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+<p>其中，<code class="language-plaintext highlighter-rouge">nested()</code>只是返回了一个协程，而这个协程永远也不会执行。这时<code class="language-plaintext highlighter-rouge">python</code>系统会给出<code class="language-plaintext highlighter-rouge">debug</code>提示，因为这个协程没有被<code class="language-plaintext highlighter-rouge">await</code>过。</p>
+
+<p>说到<code class="language-plaintext highlighter-rouge">await</code>，我们来看看<code class="language-plaintext highlighter-rouge">await</code>究竟是什么。<code class="language-plaintext highlighter-rouge">await</code>后面必须要接一个可等待对象，也就是<code class="language-plaintext highlighter-rouge">awaitable</code>对象，现在有三种可等待对象， <code class="language-plaintext highlighter-rouge">coroutine</code>，<code class="language-plaintext highlighter-rouge">task</code>，
+和<code class="language-plaintext highlighter-rouge">Future</code>。</p>
+
+<p>一个<code class="language-plaintext highlighter-rouge">awaitable</code>对象，是指它具有<code class="language-plaintext highlighter-rouge">__await__(self)</code>函数, 而且这个函数能够返回一个迭代器。同样这个迭代器也具有<code class="language-plaintext highlighter-rouge">__next__</code>方法，能够用来求值，如果没有更多数据，那就返回S<code class="language-plaintext highlighter-rouge">topIteration</code>。</p>
+
+<p>我们之前接触过了<code class="language-plaintext highlighter-rouge">coroutine</code>，那么来看看<code class="language-plaintext highlighter-rouge">task</code>。<code class="language-plaintext highlighter-rouge">task</code>是用来将协程封装为一个<code class="language-plaintext highlighter-rouge">task</code>对象，从而可以控制他们的运行。比如，我们可以安排让多个协程同时运行。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">mytask</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"Task </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">: Begin </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">gater</span><span class="p">(</span>
+        <span class="n">mytask</span><span class="p">(</span><span class="s">"A"</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">mytask</span><span class="p">(</span><span class="s">"B"</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="n">mytask</span><span class="p">(</span><span class="s">"C"</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+<p><code class="language-plaintext highlighter-rouge">futre</code>是一个特殊的对象，表示将来求值的对象。一般用在<code class="language-plaintext highlighter-rouge">asyncio</code>库的内部。之后深入<code class="language-plaintext highlighter-rouge">asyncio</code>内部原理再说。</p>
+
+           
+          <a class="read-more" href="/%E7%BC%96%E7%A8%8B/2020/09/20/generator-async.html"> »  </a>
+        </p> 
+      </div>
+      <footer class="post_meta">
+
+
+        
+        
+
+        
+        <a href="/category/编程">
+          <data data-icon="ei-archive"></data>
+          编程</a>
+        
+       
+
+        
+        
+        <span class="author_meta">
+          <img src="/assets/img/zsai.jpg"></img>
+          <span>David Lin</span>
+        </span>
+        
+       
+
+        <p class="readmore">
+          <a href=""><data data-icon="ei-arrow-right"></data>Read this article  </a>
+        </p
+
+      </footer>
+      <hr/>
+    </article> -->
+    
+
+    <div class="post_title">
+      <a href="/%E7%BC%96%E7%A8%8B/2020/09/20/python-generator.html">Python生成器与协程</a>
+      <span class="date">20 Sep, 2020</span>
     </div>
-    <!-- /pagination -->
-</section>
-<!-- /section.content -->
+
+    <!-- <article class="post_card post">
+      <header class="post_header">
+        <h2 class="post_title"><a href="/%E7%BC%96%E7%A8%8B/2020/09/20/python-generator.html">Python生成器与协程</a></h2>
+        <time class="post_date">20 September 2020, Sunday</time>
+      </header>
+      <div class="post_excerpt">
+        <p>
+          
+          <p>一个简单的生成器如下所示：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">n</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">generator</span><span class="p">()</span>
+<span class="nb">next</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="nb">next</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>前面说过，含有<code class="language-plaintext highlighter-rouge">yield</code>关键字的代码块被称为生成器，而且生成器具有自己独特的执行方式。
+需要不断调用<code class="language-plaintext highlighter-rouge">next</code>进行求值。而<code class="language-plaintext highlighter-rouge">next</code>获得的返回值，就是<code class="language-plaintext highlighter-rouge">yield</code>关键之后面的表达式的值。除了这点以外，生成器还具有一个<code class="language-plaintext highlighter-rouge">send</code>函数，他可以将<code class="language-plaintext highlighter-rouge">yield</code>语句的值传递给生成器。其他的求值过程与<code class="language-plaintext highlighter-rouge">next</code>函数类似，比如下面的代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">n</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">step</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="n">step</span>
+</code></pre></div></div>
+
+<p>需要注意的是，我们需要先调用<code class="language-plaintext highlighter-rouge">next</code>函数，确保生成器的代码执行到了<code class="language-plaintext highlighter-rouge">yield n</code>语句处，然后才能调用<code class="language-plaintext highlighter-rouge">k.send(1)</code>这句，使得生成器执行 <code class="language-plaintext highlighter-rouge">step = 1 </code>这个赋值语句执行。之后，代码会继续执行到<code class="language-plaintext highlighter-rouge">yield n</code>处，那<code class="language-plaintext highlighter-rouge">k.send(1)</code>的返回值，就是<code class="language-plaintext highlighter-rouge">yield</code>关键之返回的内容。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">k</span> <span class="o">=</span> <span class="n">generator</span><span class="p">()</span>
+<span class="nb">next</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">k</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 0
+</span><span class="n">k</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 1
+</span><span class="n">k</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># 4
+</span></code></pre></div></div>
+
+<p>虽然我们掌握了生成器求值的道理，但是如果一个生成器生成的值，来源于别的生成器的时候，写起代码来就有些繁琐：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">generaotr</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="n">x</span>
+</code></pre></div></div>
+
+<p>如果我们还要满足<code class="language-plaintext highlighter-rouge">send</code>函数传值的需求的话，情况会更加复杂。所以<code class="language-plaintext highlighter-rouge">python3.3</code>引入了新的关键之 <code class="language-plaintext highlighter-rouge">yield from</code>,
+可以方便的处理生成器的嵌套问题。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="k">from</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="k">from</span> <span class="nb">range</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+<p>这个生成器，很方便的生成<code class="language-plaintext highlighter-rouge">0~9</code>和<code class="language-plaintext highlighter-rouge">90~99</code>的序列。而整个<code class="language-plaintext highlighter-rouge">yield from</code>的值，就是子生成器最后的返回值。我们其实可以发现，我们在
+生成器中，一直没有用到<code class="language-plaintext highlighter-rouge">return</code>关键值，因为生成器产生的结果，并不是函数的<code class="language-plaintext highlighter-rouge">return</code>语句决定的。所以之前在生成器里面使用<code class="language-plaintext highlighter-rouge">return</code>是
+具有语法错误。但是有了<code class="language-plaintext highlighter-rouge">yield from</code>语句之后，我们发现有时候需要生成器在执行完毕之后，给出一个返回结果，那么现在可以再生成器中
+写<code class="language-plaintext highlighter-rouge">return</code>语句，而这个<code class="language-plaintext highlighter-rouge">return</code>的值，就是<code class="language-plaintext highlighter-rouge">yield from</code>语句执行完的值。</p>
+
+<p>之前我们看到生成器通过<code class="language-plaintext highlighter-rouge">yield</code>不断产生新的数据，如果我们使用<code class="language-plaintext highlighter-rouge">yield</code>主要是用来接收外面传递的<code class="language-plaintext highlighter-rouge">send</code>数据，那么我们可以把它看做是一个协程。
+比如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">comsumer</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="k">yield</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">process</span> <span class="o">=</span> <span class="n">comsumer</span><span class="p">()</span>
+<span class="nb">next</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+<span class="n">process</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这里，我们发现虽然我们在<code class="language-plaintext highlighter-rouge">comsumer</code>里面写了一个死循环的代码，但是它没有数据的时候就不会被执行，更妙的是它在执行一圈之后，还会主动的吧执行权限退让出来，归还给外面的调用方。这可以很天然的把它当成一个异步处理的模式来编写异步代码。那么<code class="language-plaintext highlighter-rouge">comsumer</code>其实起到的作用就是一个协程应该具有的作用。另外协程还具有<code class="language-plaintext highlighter-rouge">close</code>方法，来关闭这个协程。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">process</span> <span class="o">=</span> <span class="n">comsumer</span><span class="p">()</span>
+<span class="c1"># ...
+</span><span class="n">process</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>所以生成器和协程只是<code class="language-plaintext highlighter-rouge">yield</code>的两种用法，一个主要用来生成数据，一个主要用来接收数据。</p>
+
+           
+          <a class="read-more" href="/%E7%BC%96%E7%A8%8B/2020/09/20/python-generator.html"> »  </a>
+        </p> 
+      </div>
+      <footer class="post_meta">
+
+
+        
+        
+
+        
+        <a href="/category/编程">
+          <data data-icon="ei-archive"></data>
+          编程</a>
+        
+       
+
+        
+        
+        <span class="author_meta">
+          <img src="/assets/img/zsai.jpg"></img>
+          <span>David Lin</span>
+        </span>
+        
+       
+
+        <p class="readmore">
+          <a href=""><data data-icon="ei-arrow-right"></data>Read this article  </a>
+        </p
+
+      </footer>
+      <hr/>
+    </article> -->
+    
+
+    <div class="post_title">
+      <a href="/%E7%BC%96%E7%A8%8B/2020/09/19/python-iterator.html">Python迭代器与生成器</a>
+      <span class="date">19 Sep, 2020</span>
+    </div>
+
+    <!-- <article class="post_card post">
+      <header class="post_header">
+        <h2 class="post_title"><a href="/%E7%BC%96%E7%A8%8B/2020/09/19/python-iterator.html">Python迭代器与生成器</a></h2>
+        <time class="post_date">19 September 2020, Saturday</time>
+      </header>
+      <div class="post_excerpt">
+        <p>
+          
+          <p>在<code class="language-plaintext highlighter-rouge">Python2</code>中，我们知道<code class="language-plaintext highlighter-rouge">range()</code>和<code class="language-plaintext highlighter-rouge">xrange()</code>的差别。<code class="language-plaintext highlighter-rouge">range</code>会提前生成一个序列，而<code class="language-plaintext highlighter-rouge">xrange</code>会得到一个可迭代对象，从而能够减少内存的占用，
+优化程序的运行。由于<code class="language-plaintext highlighter-rouge">xrange</code>明显优于<code class="language-plaintext highlighter-rouge">range</code>，在<code class="language-plaintext highlighter-rouge">Python3</code>中，官方废弃了<code class="language-plaintext highlighter-rouge">xrange</code>，把<code class="language-plaintext highlighter-rouge">range</code>改为了和<code class="language-plaintext highlighter-rouge">xrange</code>一样的行为模式。</p>
+
+<p>通常<code class="language-plaintext highlighter-rouge">range</code>主要用来搭配<code class="language-plaintext highlighter-rouge">for-in</code>语句使用，用来控制遍历的次数与方式，相比<code class="language-plaintext highlighter-rouge">C++</code>的方式要稍微高级一些。而<code class="language-plaintext highlighter-rouge">range</code>函数的调用，实际上是得到了一个可迭代对象。
+所谓可迭代对象是指这个对象中有<code class="language-plaintext highlighter-rouge">__iter__</code>这个函数，而且这个函数能够返回一个迭代器。而迭代器是指一个对象中，具有<code class="language-plaintext highlighter-rouge">__next__</code>这个函数。迭代的过程，就是不断调用<code class="language-plaintext highlighter-rouge">__next__()</code>这个函数的过程，当没有元素可以迭代时，<code class="language-plaintext highlighter-rouge">__next__</code>函数需要触发一个<code class="language-plaintext highlighter-rouge">StopIteration</code>异常。</p>
+
+<p>当我们自己需要定制一个可迭代对象时，通常把这两个函数实现在一起：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>第一个函数用来生成迭代器，第二个函数是迭代器的求值函数。明白了这个道理，我们可以写出自己的<code class="language-plaintext highlighter-rouge">range</code>函数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyRange</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="p">.</span><span class="n">b</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">StopIteration</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">my_range</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">MyRange</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>了解了可迭代对象的奥秘，那我们也就知道了<code class="language-plaintext highlighter-rouge">for-in</code>语句在背后执行的关键流程，所以我们也可以写出自己版本的<code class="language-plaintext highlighter-rouge">for-in</code>：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_for_in</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+    <span class="n">itor</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">__iter__</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">itor</span><span class="p">.</span><span class="n">__next__</span><span class="p">()</span>
+        <span class="n">method</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">StopIteration</span><span class="p">:</span>
+        <span class="k">return</span>
+
+<span class="n">my_for_in</span><span class="p">(</span><span class="n">my_range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="k">print</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>由于没有关键字的加持，所以调用起来还是比较别扭的。</p>
+
+<p>如果我们使用这种方式来定义我们的可迭代对象的话，无疑是比较繁琐的。有没有更加好的方法来生成一个可迭代对象呢，答案是有。那就是<code class="language-plaintext highlighter-rouge">Python</code>里面的生成器。如果一个函数中，包含有关键字<code class="language-plaintext highlighter-rouge">yield</code>,那么这个函数就被称为生成器。这么说有点简单粗暴，我们来看下代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_range_gen</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">begin</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">begin</span>
+            <span class="n">begin</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_range_gen</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这个版本的<code class="language-plaintext highlighter-rouge">range</code>函数，我们发现代码少了很多，但是多了一个特别的关键字<code class="language-plaintext highlighter-rouge">yield</code>。<code class="language-plaintext highlighter-rouge">yield</code>这个关键字执行很有特点。
+我们单独调用<code class="language-plaintext highlighter-rouge">my_range_gen(0, 10)</code>这句代码时，其实是得到了一个生成器。他自带了<code class="language-plaintext highlighter-rouge">next</code>函数，<code class="language-plaintext highlighter-rouge">iter</code>函数，而且<code class="language-plaintext highlighter-rouge">next</code>函数在最后无法求值得时候，还会抛出一个<code class="language-plaintext highlighter-rouge">StopIteration</code>的异常。我们简单的就可以验证下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">k</span> <span class="o">=</span> <span class="n">my_range_gen</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__iter__</span><span class="p">()</span><span class="o">==</span><span class="n">k</span><span class="p">)</span> <span class="c1"># True
+</span><span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span> <span class="c1"># 0
+</span><span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span> <span class="c1"># 1
+</span><span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span> <span class="c1"># 2
+</span><span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span> <span class="c1"># StopIteration
+</span></code></pre></div></div>
+
+<p>执行函数，会得到一个生成器。这个生成器需要调用<code class="language-plaintext highlighter-rouge">__next__()</code>才开始真正执行代码，而且只执行到<code class="language-plaintext highlighter-rouge">yield</code>语句为止。执行的返回值，就是<code class="language-plaintext highlighter-rouge">yield</code>关键字后面的表达式的值。当下一次调用<code class="language-plaintext highlighter-rouge">__next__</code>函数时，代码会继续上一次执行的<code class="language-plaintext highlighter-rouge">yield</code>的位置继续执行，一直到下一个<code class="language-plaintext highlighter-rouge">yield</code>语句为止。当代码执行到最后时，<code class="language-plaintext highlighter-rouge">__next__</code>会抛出一个<code class="language-plaintext highlighter-rouge">StopIteration</code>的异常。从这点来看，生成器不过是可迭代对象的语法糖。借助生成器，我们可以很快的得到一个可迭代对象，代码简洁优美，配合的天衣无缝。</p>
+
+           
+          <a class="read-more" href="/%E7%BC%96%E7%A8%8B/2020/09/19/python-iterator.html"> »  </a>
+        </p> 
+      </div>
+      <footer class="post_meta">
+
+
+        
+        
+
+        
+        <a href="/category/编程">
+          <data data-icon="ei-archive"></data>
+          编程</a>
+        
+       
+
+        
+        
+        <span class="author_meta">
+          <img src="/assets/img/zsai.jpg"></img>
+          <span>David Lin</span>
+        </span>
+        
+       
+
+        <p class="readmore">
+          <a href=""><data data-icon="ei-arrow-right"></data>Read this article  </a>
+        </p
+
+      </footer>
+      <hr/>
+    </article> -->
+    
+
+    <div class="post_title">
+      <a href="/%E7%94%9F%E6%B4%BB/2020/08/25/begin.html">重新开始写博客了</a>
+      <span class="date">25 Aug, 2020</span>
+    </div>
+
+    <!-- <article class="post_card post">
+      <header class="post_header">
+        <h2 class="post_title"><a href="/%E7%94%9F%E6%B4%BB/2020/08/25/begin.html">重新开始写博客了</a></h2>
+        <time class="post_date">25 August 2020, Tuesday</time>
+      </header>
+      <div class="post_excerpt">
+        <p>
+          
+          <p>来长沙这么久了，之前紧张的开发工作已经告一段落。现在开始，写写文字吧。</p>
+
+           
+          <a class="read-more" href="/%E7%94%9F%E6%B4%BB/2020/08/25/begin.html"> »  </a>
+        </p> 
+      </div>
+      <footer class="post_meta">
+
+
+        
+        
+
+        
+        <a href="/category/生活">
+          <data data-icon="ei-archive"></data>
+          生活</a>
+        
+       
+
+        
+        
+        <span class="author_meta">
+          <img src="/assets/img/zsai.jpg"></img>
+          <span>David Lin</span>
+        </span>
+        
+       
+
+        <p class="readmore">
+          <a href=""><data data-icon="ei-arrow-right"></data>Read this article  </a>
+        </p
+
+      </footer>
+      <hr/>
+    </article> -->
+    
+
+    <div class="pagination older-post"><a href="./archive"><data data-icon="ei-arrow-right"></data> Archive  </a></div>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <footer class="site-footer">
+  <div class="container">
+    <div class="footer left column one-half">
+      <section class="small-font">
+        Theme <a href="https://github.com/wild-flame/jekyll-simple"> Simple </a> by <a href="http://wildflame.me">wildflame</a>
+        © 2016 
+        Powered by <a href="https://github.com/jekyll/jekyll">jekyll</a>
+      </section>
+    </div>
+
+    <div class="footer right column one-half">
+      <section class="small-font">
+        
+        <a href="https://github.com/zsai001"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span></a>
+
+        
+        
+      </section>
+    </div>
+  </div>
+</footer>
+ 
+    </div>
+  </body>
+</html>
